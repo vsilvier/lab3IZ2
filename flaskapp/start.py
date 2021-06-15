@@ -86,29 +86,20 @@ def draw(filename,knopka):
  output_filename = filename
  img.save(output_filename)
  
-
-##сохраняем новое изображение
- #img = Image.fromarray((img * 255).astype(np.uint8))
- #print(img)
- #img = Image.fromarray(img)
- #new_path = "./static/new.png"
- #print(img)
- #img.save(new_path)
- return output_filename, gr_path
-
  #рисуем второй график
- #fig = plt.figure(figsize=(6, 4))
- #ax = fig.add_subplot()
- #data = np.random.randint(0, 255, (100, 100))
- #ax.imshow(img, cmap='plasma')
- #b = ax.pcolormesh(data, edgecolors='black', cmap='plasma')
- #fig.colorbar(b, ax=ax)
- #gr_path = "./static/newgr.png"
- #sns.displot(data)
- #plt.show()
- #plt.savefig(gr_path)
- #plt.close()
+ fig = plt.figure(figsize=(6, 4))
+ ax = fig.add_subplot()
+ data = np.random.randint(0, 255, (100, 100))
+ ax.imshow(img, cmap='plasma')
+ b = ax.pcolormesh(data, edgecolors='black', cmap='plasma')
+ fig.colorbar(b, ax=ax)
+ gr_path2 = "./static/newgr2.png"
+ sns.displot(data)
+ plt.savefig(gr_path)
+ plt.close()
+ return output_filename, gr_path, gr_path2
 
+ 
 
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
@@ -119,6 +110,7 @@ def net():
  filename=None
  newfilename=None
  grname=None
+ grname2=None
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
   # файлы с изображениями читаются из каталога static
@@ -127,11 +119,11 @@ def net():
   sz=form.knopka.data
   
   form.upload.data.save(filename)
-  newfilename, grname = draw(filename,sz)
+  newfilename, grname, grname2 = draw(filename,sz)
  # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
  # сети если был нажат сабмит, либо передадим falsy значения
  
- return render_template('net.html',form=form,image_name=newfilename,gr_name=grname)
+ return render_template('net.html',form=form,image_name=newfilename,gr_name=grname,gr_name2=grname2)
 
 
 if __name__ == "__main__":
