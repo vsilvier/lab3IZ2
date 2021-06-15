@@ -95,7 +95,7 @@ def draw(filename,knopka):
  fig2.colorbar(b2, ax=ax)
  gr_path2 = "./static/newgr2.png"
  sns.displot(data2)
- plt.savefig(gr_path)
+ plt.savefig(gr_path2)
  plt.close()
  return output_filename, gr_path, gr_path2
 
