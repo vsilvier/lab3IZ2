@@ -94,7 +94,7 @@ def draw(filename,knopka):
  #new_path = "./static/new.png"
  #print(img)
  #img.save(new_path)
- #return new_path, gr_path
+ return new_path, gr_path
 
  #рисуем второй график
  #fig = plt.figure(figsize=(6, 4))
