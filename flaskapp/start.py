@@ -77,11 +77,9 @@ def draw(filename,knopka):
 
 
  knopka=float(knopka)
- height = 224
- width = 224
- img= np.array(img.resize((height,width)))/255.0
  
- img[:,:,:] = knopka
+ img = np.int16(img)
+ img = img * (knopka/127+1) - knopka
 
 ##сохраняем новое изображение
  img = Image.fromarray((img * 255).astype(np.uint8))
