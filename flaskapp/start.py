@@ -87,12 +87,12 @@ def draw(filename,knopka):
  img.save(output_filename)
  
  #рисуем второй график
- fig = plt.figure(figsize=(6, 4))
- ax = fig.add_subplot()
+ fig2 = plt.figure(figsize=(6, 4))
+ ax = fig2.add_subplot()
  data = np.random.randint(0, 255, (100, 100))
  ax.imshow(img, cmap='plasma')
  b = ax.pcolormesh(data, edgecolors='black', cmap='plasma')
- fig.colorbar(b, ax=ax)
+ fig2.colorbar(b, ax=ax)
  gr_path2 = "./static/newgr2.png"
  sns.displot(data)
  plt.savefig(gr_path)
