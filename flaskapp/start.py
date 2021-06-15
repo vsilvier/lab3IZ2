@@ -20,8 +20,8 @@ SECRET_KEY = 'secret'
 app.config['SECRET_KEY'] = SECRET_KEY
 # используем капчу и полученные секретные ключи с сайта google 
 app.config['RECAPTCHA_USE_SSL'] = False
-app.config['RECAPTCHA_PUBLIC_KEY'] = '6LcDoScbAAAAANOWBHNB3QnRTxrJvpOItbhMBKsL'
-app.config['RECAPTCHA_PRIVATE_KEY'] = '6LcDoScbAAAAAB2vlAIbxvkMUqoI90VBDX_Ix7M8'
+app.config['RECAPTCHA_PUBLIC_KEY'] = '6Lf1iDQbAAAAAE0Db9GnR6uwLETTTbAZ4W0fqPGd'
+app.config['RECAPTCHA_PRIVATE_KEY'] = '6Lf1iDQbAAAAAIMcAQGNKP5lnIqB1B4AihvtQ17K'
 app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
 # обязательно добавить для работы со стандартными шаблонами
 from flask_bootstrap import Bootstrap
@@ -33,10 +33,7 @@ class NetForm(FlaskForm):
  # и указывает пользователю ввести данные если они не введены
  # или неверны
  #rcolor = 0
- size = StringField('size', validators = [DataRequired()])
- rcolor = StringField('choose level of red intensity (0.0 - 1)', validators = [DataRequired()])
- gcolor = StringField('choose level of green intensity (0.0 - 1)', validators = [DataRequired()])
- bcolor = StringField('choose level of blue intensity (0.0 - 1)', validators = [DataRequired()])
+ knopka = StringField('Выберите уровень контраста картинки', validators = [DataRequired()])
  # поле загрузки файла
  # здесь валидатор укажет ввести правильные файлы
  upload = FileField('Load image', validators=[
@@ -59,12 +56,12 @@ import seaborn as sns
 
 ## функция для оброботки изображения 
 
-def draw(filename,size,rcolor,gcolor,bcolor):
+def draw(filename,knopka):
  ##открываем изображение 
  print(filename)
  img= Image.open(filename)
 
-##делаем график
+##рисуем первый график
  fig = plt.figure(figsize=(6, 4))
  ax = fig.add_subplot()
  data = np.random.randint(0, 255, (100, 100))
@@ -76,43 +73,16 @@ def draw(filename,size,rcolor,gcolor,bcolor):
  #plt.show()
  plt.savefig(gr_path)
  plt.close()
+ 
 
 
-##рисуем рамки
- #int rcolor = 1
- 
- size=int(size)
- rcolor = float(rcolor)
- gcolor = float(gcolor)
- bcolor = float(bcolor)
- 
+ knopka=float(knopka)
  height = 224
  width = 224
  img= np.array(img.resize((height,width)))/255.0
- print(size)
- print(rcolor)
- #rcolor = 0
  
- img[:size,:,:] = 0
- img[:,0:size,:] = 0
- img[:,224-size:,:] = 0
- img[224-size:,:,:] = 0
- 
- img[:,0:size,0] = rcolor
- img[:,224-size:,0] = rcolor
- img[224-size:,:,0] = rcolor
- img[224-size:,:,0] = rcolor
+ img[:,:,:] = knopka
 
-
- img[:size,:,1] = gcolor
- img[:,0:size,1] = gcolor
- img[:,224-size:,1] = gcolor
- img[224-size:,:,1] = gcolor
-
- img[:size,:,2] = bcolor
- img[:,0:size,2] = bcolor
- img[:,224-size:,2] = bcolor
- img[224-size:,:,2] = bcolor
 ##сохраняем новое изображение
  img = Image.fromarray((img * 255).astype(np.uint8))
  print(img)
@@ -121,6 +91,19 @@ def draw(filename,size,rcolor,gcolor,bcolor):
  print(img)
  img.save(new_path)
  return new_path, gr_path
+
+ #рисуем второй график
+ #fig = plt.figure(figsize=(6, 4))
+ #ax = fig.add_subplot()
+ #data = np.random.randint(0, 255, (100, 100))
+ #ax.imshow(img, cmap='plasma')
+ #b = ax.pcolormesh(data, edgecolors='black', cmap='plasma')
+ #fig.colorbar(b, ax=ax)
+ #gr_path = "./static/newgr.png"
+ #sns.displot(data)
+ #plt.show()
+ #plt.savefig(gr_path)
+ #plt.close()
 
 
 # метод обработки запроса GET и POST от клиента
@@ -137,14 +120,10 @@ def net():
   # файлы с изображениями читаются из каталога static
   filename = os.path.join('./static', secure_filename(form.upload.data.filename))
  
-  sz=form.size.data
-  sr=form.rcolor.data
-  sg=form.gcolor.data
-  sb=form.bcolor.data
+  sz=form.knopka.data
   
- 
   form.upload.data.save(filename)
-  newfilename, grname = draw(filename,sz,sr,sg,sb)
+  newfilename, grname = draw(filename,sz)
  # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
  # сети если был нажат сабмит, либо передадим falsy значения
  
@@ -153,4 +132,3 @@ def net():
 
 if __name__ == "__main__":
  app.run(host='127.0.0.1',port=5000)
- 
