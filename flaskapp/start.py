@@ -33,7 +33,9 @@ class NetForm(FlaskForm):
  # и указывает пользователю ввести данные если они не введены
  # или неверны
  #rcolor = 0
- knopka = StringField('Выберите уровень контраста картинки', validators = [DataRequired()])
+ knopka1 = StringField('Выберите значение контраста составляющей R', validators = [DataRequired()])
+ knopka2 = StringField('Выберите значение контраста составляющей G', validators = [DataRequired()])
+ knopka3 = StringField('Выберите значение контраста составляющей B', validators = [DataRequired()])
  # поле загрузки файла
  # здесь валидатор укажет ввести правильные файлы
  upload = FileField('Load image', validators=[
@@ -56,7 +58,7 @@ import seaborn as sns
 
 ## функция для оброботки изображения 
 
-def draw(filename,knopka):
+def draw(filename,knopka1,knopka2,knopka3):
  ##открываем изображение 
  print(filename)
  img= Image.open(filename)
@@ -74,12 +76,14 @@ def draw(filename,knopka):
  plt.savefig(gr_path)
  plt.close()
  
-
-
- knopka=float(knopka)
+ knopka1=float(knopka1)
+ knopka2=float(knopka2)
+ knopka3=float(knopka3)
  
  img = np.int16(img)
- img = img * (knopka/127+1) - knopka
+ img[ : , : , 0] = img[ : , : , 0] * (knopka1/127+1)
+ img[ : , : , 1] = img[ : , : , 1] * (knopka2/127+1)
+ img[ : , : , 2] = img[ : , : , 2] * (knopka3/127+1) 
  img = np.clip(img, 0, 255)
  img = np.uint8(img)
  img = Image.fromarray(img, 'RGB')
@@ -116,10 +120,12 @@ def net():
   # файлы с изображениями читаются из каталога static
   filename = os.path.join('./static', secure_filename(form.upload.data.filename))
  
-  sz=form.knopka.data
+  sz1=form.knopka1.data
+  sz2=form.knopka2.data
+  sz3=form.knopka3.data
   
   form.upload.data.save(filename)
-  newfilename, grname, grname2 = draw(filename,sz)
+  newfilename, grname, grname2 = draw(filename,sz1,sz2,sz3)
  # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
  # сети если был нажат сабмит, либо передадим falsy значения
  
