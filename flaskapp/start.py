@@ -103,12 +103,6 @@ def draw(filename,knopka1,knopka2,knopka3):
  plt.close()
  return output_filename, gr_path, gr_path2
 
-from tabulate import tabulate
- value_list = [['Alex', 13,1, 'Chess', 10],
-                  ['Zia',  12,2, 'Monopoly', 25]]
- column_list = ["Name", "Age", "Number of Games", "Favourite Game", "Cost of Game"]
- print tabulate(value_list, column_list, tablefmt="grid")
-
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
 def net():
