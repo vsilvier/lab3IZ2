@@ -127,7 +127,7 @@ def net():
  # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
  # сети если был нажат сабмит, либо передадим falsy значения
  
- return render_template('net.html',form=form,image_name=newfilename,gr_name=grname,gr_name2=grname2)
+ return render_template('net.html',form=form,image_name=newfilename,image=filename,gr_name=grname,gr_name2=grname2)
 
 
 if __name__ == "__main__":
