@@ -87,7 +87,7 @@ def draw(filename,knopka1,knopka2,knopka3):
  img = np.clip(img, 0, 255)
  img = np.uint8(img)
  img = Image.fromarray(img, 'RGB')
- output_filename = filename
+ output_filename = "./static/outputimg.png"
  img.save(output_filename)
  
  #рисуем второй график
