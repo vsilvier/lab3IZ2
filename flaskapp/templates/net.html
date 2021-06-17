@@ -5,18 +5,20 @@
 <!-- блок body -->
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="net") }}
+<table border="1" width="100%" cellpadding="5">
+ <tr>
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
-<h2>График исходного изображения: </h2> 
+<th><h2>График исходного изображения: </h2> 
 <!-- проверяем есть ли данные классификации -->
 {% if gr_name %}
  <p>{{gr_name}}
  <p><img src={{gr_name}}/>
 {% else %}
  <p> There is no image yet </p>
-{% endif %}
+{% endif %}</th>
 
 
-<h2>Отредактированное изображение: </h2>
+<th><h2>Отредактированное изображение: </h2>
 <!-- отображаем загруженное изображение с закругленными углами -->
 <!-- если оно есть (после submit) -->
 {% if image_name %}
@@ -24,13 +26,17 @@
  <p><img src={{image_name}}/>
 {% else %}
  <p> There is no image yet </p>
-{% endif %}
-<h2>График полученного изображения: </h2> 
+{% endif %}</th>
+  </tr>
+   <tr>
+<td><h2>График полученного изображения: </h2> 
 <!-- проверяем есть ли данные классификации -->
 {% if gr_name2 %}
  <p>{{gr_name2}}
  <p><img src={{gr_name2}}/>
 {% else %}
  <p> There is no image yet </p>
-{% endif %}
+{% endif %}</td>
+    </tr>
+ </table>
 {% endblock %}
