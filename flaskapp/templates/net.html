@@ -6,7 +6,6 @@
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="net") }}
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
-
 <h2>График исходного изображения: </h2> 
 <!-- проверяем есть ли данные классификации -->
 {% if gr_name %}
